@@ -16,15 +16,26 @@ jobs:
         uses: actions/github-script@v6  
         with:
           script: |
-            const issue = context.payload.issue;
-            const action = context.payload.action;
-            console.log(`El issue con ID ${issue.id} ha sido ${action}`);
-            return `El issue fue procesado con éxito.`;
+            const payload = context.payload;
+            const issue = payload.issue;
+            const action = payload.action;
+
+            if (issue) {
+              console.log(`El issue con ID ${issue.id} ha sido ${action}`);
+              return `El issue fue procesado con éxito.`;
+            } else {
+              console.log(`No hay un issue en este evento (${context.eventName})`);
+              return `Evento sin issue: ${context.eventName}`;
+            }
             
       - name: Info del issue y del proyecto
         run: |
-         echo "Issue creado o movido: ${{ github.event.issue.title }}"
           echo "Evento que disparó el flujo: ${{ github.event_name }}"
           echo "Estado del Issue: ${{ github.event.action }}"
+           if [ "${{ github.event.issue.title }}" != "" ]; then
+            echo "Título del issue: ${{ github.event.issue.title }}"
+          else
+            echo "No hay issue en este evento."
+          fi
           
       

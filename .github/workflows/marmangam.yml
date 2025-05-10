@@ -1,0 +1,30 @@
+name: solmunjim
+
+on:
+  workflow_dispatch:
+  issues:
+    types: [opened]
+  project_card:
+    types: [moved]
+
+jobs:
+  issue_project:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Acción de GitHub Script
+        uses: actions/github-script@v6  
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const action = context.payload.action;
+            console.log(`El issue con ID ${issue.id} ha sido ${action}`);
+            return `El issue fue procesado con éxito.`;
+            
+      - name: Info del issue y del proyecto
+        run: |
+         echo "Issue creado o movido: ${{ github.event.issue.title }}"
+          echo "Evento que disparó el flujo: ${{ github.event_name }}"
+          echo "Estado del Issue: ${{ github.event.action }}"
+          
+      

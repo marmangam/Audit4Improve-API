@@ -1,4 +1,4 @@
-name: solmunjim
+name: marmangam
 
 on:
   workflow_dispatch:
